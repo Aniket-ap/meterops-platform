@@ -22,3 +22,7 @@ Thumbs.db
 # build output (future-proof)
 dist/
 build/
+
+# vercel
+.vercel
+
