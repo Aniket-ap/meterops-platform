@@ -6,11 +6,13 @@ const routes = require("./routes");
 const app = express();
 
 // Middlewares
-app.use(cors({
-  origin: true, // Reflects the request origin, effectively allowing all
-  credentials: true // Allow cookies/auth headers
-}));
-app.options("*", cors()); // Handle preflight requests
+const corsOptions = {
+  origin: true,
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+// app.options("(.*)", cors(corsOptions)); // Removed: Redundant and causes PathError in Express 5
 app.use(express.json());
 app.use(morgan("dev"));
 
