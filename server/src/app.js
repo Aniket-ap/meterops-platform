@@ -1,8 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const routes = require("./routes");
 
 const app = express();
+
+// Routes
+app.use("/api", routes);
 
 // Middlewares
 app.use(cors());
