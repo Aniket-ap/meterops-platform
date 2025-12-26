@@ -3,6 +3,7 @@ const router = express.Router();
 
 const authMiddleware = require("../../middlewares/auth.middleware");
 const roleMiddleware = require("../../middlewares/role.middleware");
+const userController = require("./user.controller");
 
 router.get(
   "/me",
@@ -25,5 +26,14 @@ router.get(
     });
   }
 );
+
+router.post(
+  "/invite",
+  authMiddleware,
+  roleMiddleware("OWNER", "ADMIN"),
+  userController.inviteUser
+);
+
+router.post("/accept-invite", userController.acceptInvite);
 
 module.exports = router;

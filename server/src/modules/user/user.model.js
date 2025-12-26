@@ -34,6 +34,12 @@ const userSchema = new mongoose.Schema(
       enum: ["ACTIVE", "INVITED", "DISABLED"],
       default: "ACTIVE",
     },
+    inviteToken: {
+      type: String,
+    },
+    inviteExpiresAt: {
+      type: Date,
+    }
   },
   { timestamps: true }
 );
