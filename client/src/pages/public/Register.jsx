@@ -5,13 +5,13 @@ import { BarChart3, Rocket, Shield } from 'lucide-react';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    tenantName: '',
-    tenantDomain: '',
-    name: '',
+    companyName: '',
+    domain: '',
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -19,13 +19,34 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return false;
+    }
+    if (!/^[a-z0-9-]+$/.test(formData.domain)) {
+      setError('Workspace domain can only contain lowercase letters, numbers, and hyphens');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
+    setIsLoading(true);
     try {
       await register(formData);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to register');
+      if (err.response?.status === 409) {
+        setError('This workspace or email is already registered.');
+      } else {
+        setError(err.response?.data?.message || 'Failed to register');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -86,16 +107,16 @@ const Register = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="tenantName" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="companyName" className="block text-sm font-medium leading-6 text-gray-900">
                   Company Name
                 </label>
                 <div className="mt-2">
                   <input
-                    id="tenantName"
-                    name="tenantName"
+                    id="companyName"
+                    name="companyName"
                     type="text"
                     required
-                    value={formData.tenantName}
+                    value={formData.companyName}
                     onChange={handleChange}
                     className="block w-full rounded-lg border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-4 bg-gray-50/50"
                     placeholder="Acme Inc."
@@ -103,16 +124,16 @@ const Register = () => {
                 </div>
               </div>
               <div>
-                <label htmlFor="tenantDomain" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="domain" className="block text-sm font-medium leading-6 text-gray-900">
                   Workspace
                 </label>
                 <div className="mt-2 relative">
                   <input
-                    id="tenantDomain"
-                    name="tenantDomain"
+                    id="domain"
+                    name="domain"
                     type="text"
                     required
-                    value={formData.tenantDomain}
+                    value={formData.domain}
                     onChange={handleChange}
                     className="block w-full rounded-lg border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-4 bg-gray-50/50"
                     placeholder="acme"
@@ -125,26 +146,8 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                Full Name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="block w-full rounded-lg border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-4 bg-gray-50/50"
-                  placeholder="John Doe"
-                />
-              </div>
-            </div>
-
-            <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Work Email
+                Email address
               </label>
               <div className="mt-2">
                 <input
@@ -181,9 +184,17 @@ const Register = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-lg bg-primary px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all hover:shadow-lg"
+                disabled={isLoading}
+                className="flex w-full justify-center rounded-lg bg-primary px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Create Account
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Creating account...</span>
+                  </div>
+                ) : (
+                  'Create Account'
+                )}
               </button>
             </div>
           </form>

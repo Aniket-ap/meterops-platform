@@ -12,11 +12,42 @@ const planLimit = require("../../middlewares/planLimit.middleware");
 router.get(
   "/me",
   authMiddleware,
-  (req, res) => {
-    res.json({
-      message: "Protected user route",
-      user: req.user,
-    });
+  async (req, res) => {
+    try {
+      const user = req.user;
+      // We need to fetch the tenant details separately if they are not already populated
+      // Assuming req.user is populated with tenant or we can fetch it.
+      // Let's assume req.user is just the user document for now.
+      
+      // If req.user does not have populated tenant, we might want to fetch it
+      // But for now let's construct the response based on available data
+      // To match the requested structure:
+      
+      // We need to fetch the full tenant details
+      const Tenant = require('../tenant/tenant.model');
+      const tenant = await Tenant.findById(user.tenantId);
+
+      res.json({
+        success: true,
+        data: {
+          user: {
+            id: user._id,
+            email: user.email,
+            role: user.role,
+            status: user.status
+          },
+          tenant: tenant ? {
+            id: tenant._id,
+            name: tenant.name,
+            domain: tenant.domain,
+            plan: tenant.plan || "FREE", // Assuming default plan
+            status: tenant.status || "ACTIVE" // Assuming default status
+          } : null
+        }
+      });
+    } catch (error) {
+       res.status(500).json({ success: false, message: "Failed to fetch user details" });
+    }
   }
 );
 
@@ -39,6 +70,9 @@ router.post(
   roleMiddleware("OWNER", "ADMIN"),
   userController.inviteUser
 );
+
+// Accept invite (Public)
+router.post("/accept-invite", userController.acceptInvite);
 
 // List users (WITH usage tracking)
 router.get(
@@ -66,8 +100,5 @@ router.patch(
   roleMiddleware("OWNER"),
   userController.changeRole
 );
-
-// Accept invite (public)
-router.post("/accept-invite", userController.acceptInvite);
 
 module.exports = router;

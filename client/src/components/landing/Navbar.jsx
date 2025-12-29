@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,7 +24,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <span className="text-2xl font-bold text-primary tracking-tight">MeterOps</span>
+            <Link to="/" className="text-2xl font-bold text-primary tracking-tight">MeterOps</Link>
           </div>
 
           {/* Desktop Links */}
@@ -30,13 +32,25 @@ const Navbar = () => {
             <a href="#features" className="text-gray-600 hover:text-primary font-medium transition-colors">Features</a>
             <a href="#pricing" className="text-gray-600 hover:text-primary font-medium transition-colors">Pricing</a>
             <a href="#" className="text-gray-600 hover:text-primary font-medium transition-colors">Docs</a>
-            <Link to="/login" className="text-gray-600 hover:text-primary font-medium transition-colors">Login</Link>
-            <Link
-              to="/register"
-              className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:bg-primary-hover transition-all transform hover:scale-105 shadow-sm hover:shadow-md"
-            >
-              Get Started
-            </Link>
+            
+            {user ? (
+              <Link
+                to="/dashboard"
+                className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:bg-primary-hover transition-all transform hover:scale-105 shadow-sm hover:shadow-md"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link to="/login" className="text-gray-600 hover:text-primary font-medium transition-colors">Login</Link>
+                <Link
+                  to="/register"
+                  className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:bg-primary-hover transition-all transform hover:scale-105 shadow-sm hover:shadow-md"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

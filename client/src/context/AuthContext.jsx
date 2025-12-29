@@ -5,6 +5,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [tenant, setTenant] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
@@ -13,14 +14,19 @@ export const AuthProvider = ({ children }) => {
       fetchUser();
     } else {
       setUser(null);
+      setTenant(null);
       setLoading(false);
     }
   }, [token]);
 
   const fetchUser = async () => {
+    setLoading(true);
     try {
       const { data } = await api.get('/users/me');
-      setUser(data.user);
+      if (data.success) {
+        setUser(data.data.user);
+        setTenant(data.data.tenant);
+      }
     } catch (error) {
       console.error('Failed to fetch user', error);
       logout();
@@ -30,16 +36,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const { data } = await api.post('/auth/login', { email, password });
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    return data;
+    const response = await api.post('/auth/login', { email, password });
+    const { token } = response.data.data;
+    localStorage.setItem('token', token);
+    setToken(token);
+    await fetchUser();
+    return response.data;
   };
 
   const register = async (payload) => {
     const { data } = await api.post('/auth/register-tenant', payload);
     localStorage.setItem('token', data.token);
     setToken(data.token);
+    await fetchUser();
     return data;
   };
 
@@ -51,11 +60,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     setToken(null);
     setUser(null);
+    setTenant(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, acceptInvite, logout, loading }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, tenant, token, login, register, acceptInvite, logout, loading }}>
+      {children}
     </AuthContext.Provider>
   );
 };

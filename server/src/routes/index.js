@@ -7,7 +7,7 @@ const usageRoutes = require("../modules/usage/usage.routes");
 const billingRoutes = require("../modules/billing/billing.routes");
 
 router.use("/auth", authRoutes);
-router.use("/user", userRoutes);
+router.use("/users", userRoutes);
 router.use("/usage", usageRoutes);
 router.use("/billing", billingRoutes);
 

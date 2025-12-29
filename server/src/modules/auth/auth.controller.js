@@ -26,12 +26,19 @@ exports.registerTenant = async (req, res) => {
       domain,
     });
 
-    const owner = await User.create({
-      tenantId: tenant._id,
-      email,
-      password,
-      role: "OWNER",
-    });
+    let owner;
+    try {
+      owner = await User.create({
+        tenantId: tenant._id,
+        email,
+        password,
+        role: "OWNER",
+      });
+    } catch (userError) {
+      // Rollback: delete tenant if user creation fails
+      await Tenant.findByIdAndDelete(tenant._id);
+      throw userError;
+    }
 
     const token = generateToken({
       userId: owner._id,
@@ -44,7 +51,8 @@ exports.registerTenant = async (req, res) => {
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: "Registration failed", error });
+    console.error("Registration Error:", error);
+    res.status(500).json({ message: "Registration failed", error: error.message });
   }
 };
 
@@ -68,8 +76,14 @@ exports.login = async (req, res) => {
       role: user.role,
     });
 
-    res.json({ token });
+    res.json({
+      success: true,
+      message: "Login successful",
+      data: {
+        token,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: "Login failed", error });
+    res.status(500).json({ success: false, message: "Login failed", error });
   }
 };
