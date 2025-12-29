@@ -62,3 +62,57 @@ exports.acceptInvite = async (req, res) => {
     res.status(500).json({ message: "Invite acceptance failed", error });
   }
 };
+
+exports.listUsers = async (req, res) => {
+  try {
+    const { tenantId } = req.user;
+
+    const users = await User.find(
+      { tenantId },
+      "-password -inviteToken -inviteExpiresAt"
+    );
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch users" });
+  }
+};
+
+exports.disableUser = async (req, res) => {
+  try {
+    const { tenantId } = req.user;
+    const { userId } = req.params;
+
+    const user = await User.findOne({ _id: userId, tenantId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.status = "DISABLED";
+    await user.save();
+
+    res.json({ message: "User disabled successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to disable user" });
+  }
+};
+
+exports.changeRole = async (req, res) => {
+  try {
+    const { tenantId } = req.user;
+    const { userId } = req.params;
+    const { role } = req.body;
+
+    const user = await User.findOne({ _id: userId, tenantId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.role = role;
+    await user.save();
+
+    res.json({ message: "User role updated" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update role" });
+  }
+};

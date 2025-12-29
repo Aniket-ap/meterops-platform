@@ -34,6 +34,28 @@ router.post(
   userController.inviteUser
 );
 
+router.get(
+  "/",
+  authMiddleware,
+  roleMiddleware("OWNER", "ADMIN"),
+  userController.listUsers
+);
+
+router.patch(
+  "/:userId/disable",
+  authMiddleware,
+  roleMiddleware("OWNER", "ADMIN"),
+  userController.disableUser
+);
+
+router.patch(
+  "/:userId/role",
+  authMiddleware,
+  roleMiddleware("OWNER"),
+  userController.changeRole
+);
+
+
 router.post("/accept-invite", userController.acceptInvite);
 
 module.exports = router;
