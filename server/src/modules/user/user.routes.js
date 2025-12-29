@@ -6,6 +6,7 @@ const roleMiddleware = require("../../middlewares/role.middleware");
 const usageMiddleware = require("../../middlewares/usage.middleware");
 const userController = require("./user.controller");
 const rateLimit = require("../../middlewares/rateLimit.middleware");
+const planLimit = require("../../middlewares/planLimit.middleware");
 
 // Get current user
 router.get(
@@ -44,6 +45,7 @@ router.get(
   "/",
   authMiddleware,
   roleMiddleware("OWNER", "ADMIN"),
+  planLimit("LIST_USERS"),
   rateLimit({ feature: "LIST_USERS", limit: 10, windowInSeconds: 60 }),
   usageMiddleware("LIST_USERS"),
   userController.listUsers
