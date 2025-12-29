@@ -23,7 +23,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await register(formData);
-      navigate('/dashboard');
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to register');
     }
