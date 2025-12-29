@@ -3,8 +3,10 @@ const router = express.Router();
 
 const authMiddleware = require("../../middlewares/auth.middleware");
 const roleMiddleware = require("../../middlewares/role.middleware");
+const usageMiddleware = require("../../middlewares/usage.middleware");
 const userController = require("./user.controller");
 
+// Get current user
 router.get(
   "/me",
   authMiddleware,
@@ -16,6 +18,7 @@ router.get(
   }
 );
 
+// Admin test route
 router.get(
   "/admin-only",
   authMiddleware,
@@ -27,6 +30,7 @@ router.get(
   }
 );
 
+// Invite user
 router.post(
   "/invite",
   authMiddleware,
@@ -34,13 +38,16 @@ router.post(
   userController.inviteUser
 );
 
+// List users (WITH usage tracking)
 router.get(
   "/",
   authMiddleware,
   roleMiddleware("OWNER", "ADMIN"),
+  usageMiddleware("LIST_USERS"),
   userController.listUsers
 );
 
+// Disable user
 router.patch(
   "/:userId/disable",
   authMiddleware,
@@ -48,6 +55,7 @@ router.patch(
   userController.disableUser
 );
 
+// Change user role
 router.patch(
   "/:userId/role",
   authMiddleware,
@@ -55,7 +63,7 @@ router.patch(
   userController.changeRole
 );
 
-
+// Accept invite (public)
 router.post("/accept-invite", userController.acceptInvite);
 
 module.exports = router;
