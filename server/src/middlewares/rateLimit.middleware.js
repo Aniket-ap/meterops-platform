@@ -2,6 +2,11 @@ const redis = require("../config/redis");
 
 module.exports = ({ feature, limit, windowInSeconds }) => {
   return async (req, res, next) => {
+    // If Redis is not connected, skip rate limiting
+    if (redis.status !== "ready") {
+      return next();
+    }
+
     try {
       const { tenantId } = req.user;
       const key = `rate:${tenantId}:${feature}`;
