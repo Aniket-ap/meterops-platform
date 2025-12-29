@@ -19,6 +19,9 @@ const connectDB = async () => {
   }
 };
 
+require("./src/jobs/monthlyInvoice.job");
+require("./src/jobs/usageCleanup.job");
+
 // Start server if running directly (Local/VPS)
 if (require.main === module) {
   connectDB().then(() => {
