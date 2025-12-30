@@ -20,8 +20,15 @@ const Register = () => {
   };
 
   const validateForm = () => {
-    if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters long');
+    const pwd = formData.password;
+    const missing = [];
+    if (pwd.length < 8) missing.push('8+ characters');
+    if (!/[A-Z]/.test(pwd)) missing.push('an uppercase letter');
+    if (!/[a-z]/.test(pwd)) missing.push('a lowercase letter');
+    if (!/[0-9]/.test(pwd)) missing.push('a number');
+    if (!/[^A-Za-z0-9]/.test(pwd)) missing.push('a symbol');
+    if (missing.length) {
+      setError(`Password must include ${missing.join(', ')}`);
       return false;
     }
     if (!/^[a-z0-9-]+$/.test(formData.domain)) {
@@ -176,7 +183,7 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   className="block w-full rounded-lg border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-4 bg-gray-50/50"
-                  placeholder="Min. 8 characters"
+                  placeholder="Use 8+ chars with upper/lowercase, number & symbol"
                 />
               </div>
             </div>

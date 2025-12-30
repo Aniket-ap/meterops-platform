@@ -65,6 +65,15 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    if (user.status === "INVITED") {
+      return res
+        .status(403)
+        .json({ message: "Account not activated. Please accept the invite sent to your email." });
+    }
+    if (user.status === "DISABLED") {
+      return res.status(403).json({ message: "Account disabled. Contact your workspace admin." });
+    }
+
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });

@@ -93,12 +93,36 @@ router.patch(
   userController.disableUser
 );
 
+// Enable user
+router.patch(
+  "/:userId/enable",
+  authMiddleware,
+  roleMiddleware("OWNER", "ADMIN"),
+  userController.enableUser
+);
+
+// Delete user
+router.delete(
+  "/:userId",
+  authMiddleware,
+  roleMiddleware("OWNER", "ADMIN"),
+  userController.deleteUser
+);
+
 // Change user role
 router.patch(
   "/:userId/role",
   authMiddleware,
   roleMiddleware("OWNER"),
   userController.changeRole
+);
+
+// Resend Invite
+router.post(
+  "/:userId/resend-invite",
+  authMiddleware,
+  roleMiddleware("OWNER", "ADMIN"),
+  userController.resendInvite
 );
 
 module.exports = router;
