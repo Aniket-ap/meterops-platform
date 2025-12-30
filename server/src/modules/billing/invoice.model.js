@@ -9,19 +9,21 @@ const invoiceSchema = new mongoose.Schema(
       index: true,
     },
 
-    month: {
+    billingMonth: {
       type: String, // YYYY-MM
       required: true,
     },
 
-    items: [
-      {
-        feature: String,
-        usage: Number,
-        rate: Number,
-        amount: Number,
-      },
-    ],
+    usageSummary: {
+      type: Map,
+      of: Number, // feature -> quantity
+      default: {},
+    },
+
+    plan: {
+      type: String,
+      required: true,
+    },
 
     totalAmount: {
       type: Number,
@@ -33,10 +35,15 @@ const invoiceSchema = new mongoose.Schema(
       enum: ["PENDING", "PAID"],
       default: "PENDING",
     },
+
+    generatedAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true }
 );
 
-invoiceSchema.index({ tenantId: 1, month: 1 }, { unique: true });
+invoiceSchema.index({ tenantId: 1, billingMonth: 1 }, { unique: true });
 
 module.exports = mongoose.model("Invoice", invoiceSchema);

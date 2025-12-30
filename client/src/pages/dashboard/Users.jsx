@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
-import { AlertCircle, CheckCircle, UserX, UserPlus, Users as UsersIcon, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { AlertCircle, CheckCircle, UserX, UserPlus, Users as UsersIcon, Mail, Lock, ArrowRight } from 'lucide-react';
 
 const Users = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isLimitError, setIsLimitError] = useState(false);
   const [globalError, setGlobalError] = useState('');
   const [globalSuccess, setGlobalSuccess] = useState('');
   
@@ -74,6 +76,9 @@ const Users = () => {
     } catch (err) {
       const msg = err.response?.data?.message || 'Failed to fetch users';
       setError(msg);
+      if (err.response?.status === 403 && msg.includes('Usage limit exceeded')) {
+        setIsLimitError(true);
+      }
     } finally {
       setLoading(false);
     }
@@ -188,6 +193,48 @@ const Users = () => {
   }
 
   if (error) {
+    if (isLimitError) {
+      return (
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-2xl mx-auto mt-8 border border-red-100">
+          <div className="bg-gradient-to-r from-red-500 to-pink-600 p-6 text-white flex items-center gap-4">
+            <div className="bg-white bg-opacity-20 p-3 rounded-full">
+              <Lock size={32} className="text-white" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold">Usage Limit Reached</h2>
+              <p className="text-red-100 mt-1">Your workspace has hit its monthly request limit.</p>
+            </div>
+          </div>
+          <div className="p-8">
+            <div className="prose text-gray-600 mb-6">
+              <p>
+                You have exceeded the maximum number of requests allowed for your current plan. 
+                As a result, access to the user management list has been temporarily paused.
+              </p>
+              <p className="mt-2">
+                To restore access immediately and unlock more features, please upgrade your plan.
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <Link 
+                to="/dashboard/billing" 
+                className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-hover transition-colors shadow-md hover:shadow-lg"
+              >
+                Upgrade Plan <ArrowRight size={18} />
+              </Link>
+              <Link 
+                to="/dashboard" 
+                className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+              >
+                Return to Dashboard
+              </Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="bg-white rounded-lg shadow p-6">
         <div className="text-red-600 font-semibold">Error</div>

@@ -68,6 +68,7 @@ router.post(
   "/invite",
   authMiddleware,
   roleMiddleware("OWNER", "ADMIN"),
+  usageMiddleware("INVITE_USER"),
   userController.inviteUser
 );
 
@@ -90,6 +91,7 @@ router.patch(
   "/:userId/disable",
   authMiddleware,
   roleMiddleware("OWNER", "ADMIN"),
+  usageMiddleware("DISABLE_USER"),
   userController.disableUser
 );
 
@@ -98,6 +100,7 @@ router.patch(
   "/:userId/enable",
   authMiddleware,
   roleMiddleware("OWNER", "ADMIN"),
+  usageMiddleware("ENABLE_USER"),
   userController.enableUser
 );
 
@@ -106,6 +109,7 @@ router.delete(
   "/:userId",
   authMiddleware,
   roleMiddleware("OWNER", "ADMIN"),
+  usageMiddleware("DELETE_USER"),
   userController.deleteUser
 );
 
@@ -114,6 +118,7 @@ router.patch(
   "/:userId/role",
   authMiddleware,
   roleMiddleware("OWNER"),
+  usageMiddleware("CHANGE_ROLE"),
   userController.changeRole
 );
 

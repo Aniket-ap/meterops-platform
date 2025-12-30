@@ -46,7 +46,7 @@ const DashboardLayout = () => {
           >
             Usage
           </NavLink>
-          {user?.role !== 'MEMBER' && (
+          {user?.role === 'OWNER' && (
             <NavLink
               to="/dashboard/billing"
               className={({ isActive }) =>

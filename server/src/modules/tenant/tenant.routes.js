@@ -3,6 +3,7 @@ const router = express.Router();
 
 const authMiddleware = require("../../middlewares/auth.middleware");
 const roleMiddleware = require("../../middlewares/role.middleware");
+const usageMiddleware = require("../../middlewares/usage.middleware");
 const Tenant = require("./tenant.model");
 
 // Explicitly handle OPTIONS for /me to prevent 404/405 issues
@@ -12,21 +13,26 @@ router.patch(
   "/me",
   authMiddleware,
   roleMiddleware("OWNER"),
+  // usageMiddleware("UPDATE_TENANT"), // Removed to allow plan upgrade even when limit exceeded
   async (req, res) => {
     try {
       const { tenantId } = req.user;
-      const name = String(req.body.name || "").trim();
+      const { name, plan } = req.body; // Allow plan update for testing/demo
 
-      if (!name) {
+      const updateData = {};
+      if (name) updateData.name = String(name).trim();
+      if (plan && ["FREE", "PRO", "ENTERPRISE"].includes(plan)) updateData.plan = plan;
+
+      if (Object.keys(updateData).length === 0) {
         return res.status(400).json({
           success: false,
-          message: "Tenant name is required",
+          message: "No valid fields to update",
         });
       }
 
       const tenant = await Tenant.findByIdAndUpdate(
         tenantId,
-        { name },
+        updateData,
         { new: true }
       );
 
