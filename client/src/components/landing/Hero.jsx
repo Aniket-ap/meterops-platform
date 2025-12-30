@@ -3,89 +3,112 @@ import { ArrowRight, BarChart3, Users, CreditCard } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gray-50">
+    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white">
+      {/* Background Gradient */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-purple-200 mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-200 mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] rounded-full bg-pink-200 mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
           {/* Left Content */}
           <div className="text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-[1.15] tracking-tight">
-              Track usage. <br />
-              Control access. <br />
-              <span className="text-primary">Monetize your SaaS.</span>
+            <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium text-primary bg-primary/10 mb-6">
+              <span className="flex h-2 w-2 rounded-full bg-primary mr-2"></span>
+              v1.0 is now live
+            </div>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-6">
+              Monetize your <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-600 to-pink-600">
+                API Potential
+              </span>
             </h1>
-            <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              MeterOps helps SaaS teams track feature usage, enforce rate limits, and automate billing — all in one platform.
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-10">
+              The complete infrastructure for SaaS metering. Track usage, enforce limits, and bill customers without writing a single line of billing code.
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link
                 to="/register"
-                className="inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white bg-primary rounded-xl hover:bg-primary-hover transition-all shadow-lg hover:shadow-primary/25"
+                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gray-900 rounded-2xl hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1"
               >
-                Start Free
+                Start Building Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <a
-                href="#"
-                className="inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all hover:border-gray-300"
+                href="#features"
+                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-gray-700 bg-white border-2 border-gray-100 rounded-2xl hover:border-gray-300 hover:bg-gray-50 transition-all"
               >
-                View Docs
+                Explore Features
               </a>
+            </div>
+            
+            <div className="mt-10 flex items-center justify-center lg:justify-start gap-4 text-sm text-gray-500 font-medium">
+               <div className="flex -space-x-2">
+                 {[1,2,3,4].map(i => (
+                   <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-xs overflow-hidden">
+                     <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`} alt="avatar" />
+                   </div>
+                 ))}
+               </div>
+               <div>Trusted by 500+ developers</div>
             </div>
           </div>
 
-          {/* Right Content - Mockup */}
-          <div className="relative mx-auto w-full max-w-[500px] lg:max-w-none">
-            <div className="relative rounded-2xl bg-white shadow-2xl border border-gray-100 p-6 z-10 transform transition-transform hover:scale-[1.01] duration-500">
-              {/* Fake Dashboard Header */}
-              <div className="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+          {/* Right Content - Modern Glass Card */}
+          <div className="relative mx-auto w-full max-w-[600px] lg:max-w-none perspective-1000">
+            <div className="relative rounded-3xl bg-white/80 backdrop-blur-xl shadow-2xl border border-white/50 p-8 z-10 transform transition-transform hover:rotate-1 duration-500">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                   <h3 className="text-lg font-bold text-gray-900">Monthly Revenue</h3>
+                   <p className="text-sm text-gray-500">Real-time overview</p>
                 </div>
-                <div className="h-2 w-20 bg-gray-100 rounded-full"></div>
+                <div className="p-2 bg-green-100 rounded-lg text-green-700 font-bold text-sm">+12.5%</div>
               </div>
 
-              {/* Stats Cards */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-indigo-50 p-4 rounded-xl">
-                  <div className="flex items-center gap-2 text-indigo-600 mb-2">
-                    <BarChart3 size={18} />
-                    <span className="text-sm font-medium">API Calls</span>
-                  </div>
-                  <div className="text-2xl font-bold text-gray-900">1.2M</div>
-                  <div className="text-xs text-indigo-600 mt-1">+12% vs last month</div>
-                </div>
-                <div className="bg-green-50 p-4 rounded-xl">
-                  <div className="flex items-center gap-2 text-green-600 mb-2">
-                    <Users size={18} />
-                    <span className="text-sm font-medium">Active Tenants</span>
-                  </div>
-                  <div className="text-2xl font-bold text-gray-900">843</div>
-                  <div className="text-xs text-green-600 mt-1">98% retention</div>
-                </div>
+              {/* Big Stat */}
+              <div className="mb-8">
+                 <div className="text-5xl font-extrabold text-gray-900 tracking-tight">$24,500.00</div>
+                 <div className="h-2 w-full bg-gray-100 rounded-full mt-4 overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-primary to-purple-500 w-[75%]"></div>
+                 </div>
               </div>
 
-              {/* Usage Chart Mockup */}
-              <div className="bg-gray-50 rounded-xl p-4 h-48 flex items-end justify-between gap-2">
-                {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
-                  <div 
-                    key={i} 
-                    className="w-full bg-primary/20 rounded-t-sm hover:bg-primary/30 transition-colors cursor-pointer relative group"
-                    style={{ height: `${h}%` }}
-                  >
-                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        {h * 100}
-                     </div>
-                  </div>
-                ))}
+              {/* Grid Stats */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                   <div className="flex items-center gap-2 mb-2 text-gray-500">
+                      <Users size={16} />
+                      <span className="text-xs font-bold uppercase">Active Tenants</span>
+                   </div>
+                   <div className="text-2xl font-bold text-gray-900">1,240</div>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                   <div className="flex items-center gap-2 mb-2 text-gray-500">
+                      <BarChart3 size={16} />
+                      <span className="text-xs font-bold uppercase">API Requests</span>
+                   </div>
+                   <div className="text-2xl font-bold text-gray-900">8.5M</div>
+                </div>
               </div>
             </div>
 
-            {/* Decorative Blobs */}
-            <div className="absolute -top-12 -right-12 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-            <div className="absolute -bottom-12 -left-12 w-72 h-72 bg-primary/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+            {/* Floating Elements */}
+            <div className="absolute -right-8 top-1/2 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 animate-bounce-slow hidden sm:block">
+               <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                     <CreditCard size={20} />
+                  </div>
+                  <div>
+                     <div className="text-sm font-bold text-gray-900">Payment Recieved</div>
+                     <div className="text-xs text-gray-500">Just now</div>
+                  </div>
+                  <div className="text-sm font-bold text-green-600 ml-2">+$49.00</div>
+               </div>
+            </div>
           </div>
 
         </div>
