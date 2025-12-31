@@ -7,10 +7,10 @@ const FinalCTA = () => {
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-8">
-          Start building scalable SaaS today
+          Ready to monetize your API?
         </h2>
         <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-          Join hundreds of developers who trust MeterOps for their metering and billing infrastructure.
+          Join the next generation of SaaS companies using MeterOps for usage-based billing.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
@@ -19,12 +19,6 @@ const FinalCTA = () => {
           >
             Create Account
           </Link>
-          <a
-            href="#"
-            className="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-gray-900 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all"
-          >
-            View Documentation
-          </a>
         </div>
       </div>
     </section>

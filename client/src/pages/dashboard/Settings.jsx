@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import { 
+  Building, 
+  Globe, 
+  CreditCard, 
+  Activity, 
+  Save, 
+  CheckCircle, 
+  AlertCircle,
+  Hash,
+  Shield,
+  LayoutDashboard
+} from 'lucide-react';
 
 const Settings = () => {
   const { user } = useAuth();
@@ -53,6 +65,8 @@ const Settings = () => {
           ...(tenant || {}),
           name: trimmed,
         });
+        // Clear success message after 3 seconds
+        setTimeout(() => setSuccess(''), 3000);
       } else {
         setError(data?.message || 'Failed to save settings');
       }
@@ -64,65 +78,180 @@ const Settings = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Organization Settings</h1>
-        </div>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          {loading ? (
-            <div className="text-gray-500">Loading...</div>
-          ) : error ? (
-            <div className="text-red-600">{error}</div>
-          ) : !tenant ? (
-            <div className="text-gray-500">No tenant information available.</div>
-          ) : (
-            <form onSubmit={handleSave} className="space-y-6">
-              {success && <div className="text-green-600">{success}</div>}
-              {error && <div className="text-red-600">{error}</div>}
+  if (!tenant) {
+    return (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center">
+        <div className="mx-auto w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+          <Building className="w-6 h-6 text-gray-500" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900 mb-2">No Organization Found</h3>
+        <p className="text-gray-500 max-w-md mx-auto">
+          We couldn't retrieve your organization details. Please try refreshing the page.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Organization Settings</h1>
+        <p className="text-gray-500 mt-1">Manage your workspace details and preferences.</p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Settings Card */}
+        <div className="lg:col-span-2 space-y-6">
+          <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-indigo-50 rounded-lg">
+                  <Building className="w-5 h-5 text-indigo-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">General Information</h3>
+              </div>
+              {!isOwner && (
+                <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full flex items-center gap-1">
+                  <Shield size={12} /> View Only
+                </span>
+              )}
+            </div>
+            
+            <div className="p-6 space-y-6">
+              {success && (
+                <div className="bg-green-50 text-green-700 p-4 rounded-lg flex items-center gap-2 text-sm border border-green-100">
+                  <CheckCircle size={16} /> {success}
+                </div>
+              )}
+              
+              {error && (
+                <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-center gap-2 text-sm border border-red-100">
+                  <AlertCircle size={16} /> {error}
+                </div>
+              )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Tenant Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  disabled={isDisabled}
-                  className="block w-full rounded-lg border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-4 disabled:bg-gray-100 disabled:text-gray-500"
-                />
-                <p className="mt-2 text-xs text-gray-500">
-                  Allowed: letters, numbers, spaces, hyphens (-). Avoid emojis or special symbols.
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Organization Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <LayoutDashboard className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={isDisabled}
+                    className="block w-full pl-10 rounded-lg border-gray-300 shadow-sm focus:ring-primary focus:border-primary sm:text-sm disabled:bg-gray-50 disabled:text-gray-500 py-2.5"
+                    placeholder="My Company"
+                  />
+                </div>
+                <p className="mt-2 text-xs text-gray-500 flex items-center gap-1">
+                  <AlertCircle size={12} />
+                  Allowed: letters, numbers, spaces, hyphens (-).
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Domain</label>
-                  <div className="px-4 py-2 bg-gray-50 rounded-lg border border-gray-200 text-gray-700">{tenant.domain}</div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Workspace Domain
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Globe className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={tenant.domain || ''}
+                    disabled
+                    className="block w-full pl-10 rounded-lg border-gray-300 bg-gray-50 text-gray-500 shadow-sm sm:text-sm py-2.5 cursor-not-allowed"
+                  />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Plan</label>
-                  <div className="px-4 py-2 bg-gray-50 rounded-lg border border-gray-200 text-gray-700">{tenant.plan}</div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                  <div className="px-4 py-2 bg-gray-50 rounded-lg border border-gray-200 text-gray-700">{tenant.status}</div>
-                </div>
+                <p className="mt-2 text-xs text-gray-500">
+                  Your unique workspace identifier. Cannot be changed.
+                </p>
               </div>
+            </div>
 
-              {isOwner && (
+            {isOwner && (
+              <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-end">
                 <button
                   type="submit"
                   disabled={saving}
-                  className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:bg-primary-hover transition-all transform hover:scale-105 shadow-sm hover:shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-primary hover:bg-primary-hover transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed gap-2"
                 >
-                  {saving ? 'Saving...' : 'Save'}
+                  {saving ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save size={16} />
+                      Save Changes
+                    </>
+                  )}
                 </button>
-              )}
-            </form>
-          )}
+              </div>
+            )}
+          </form>
+        </div>
+
+        {/* Status Card */}
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-6 border-b border-gray-100 flex items-center gap-3">
+              <div className="p-2 bg-blue-50 rounded-lg">
+                <Activity className="w-5 h-5 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">Subscription Status</h3>
+            </div>
+            <div className="p-6 space-y-6">
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div>
+                  <p className="text-sm font-medium text-gray-500 mb-1">Current Plan</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl font-bold text-gray-900">{tenant.plan}</span>
+                    <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      Active
+                    </span>
+                  </div>
+                </div>
+                <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100">
+                  <CreditCard className="w-5 h-5 text-gray-400" />
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-gray-700">Account Status</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    tenant.status === 'ACTIVE' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {tenant.status}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <span>Tenant ID</span>
+                  <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">
+                    {tenant._id?.slice(-8).toUpperCase() || 'N/A'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

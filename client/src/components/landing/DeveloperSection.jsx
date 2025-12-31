@@ -12,12 +12,12 @@ const DeveloperSection = () => {
               Developer First
             </div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-6">
-              Designed for developers. <br />
-              <span className="text-indigo-400">Simple APIs. Powerful backend.</span>
+              Designed for modern engineering. <br />
+              <span className="text-indigo-400">Simple APIs. Powerful billing.</span>
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed mb-8">
-              Integrate metering and billing into your application with just a few lines of code. 
-              We handle the complex logic of rate limiting and aggregation so you can focus on building features.
+              Integrate metering into your application with our high-performance SDKs. 
+              We handle the complex logic of aggregation, windowing, and overage protection.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex items-center gap-3 text-gray-300">
@@ -26,11 +26,11 @@ const DeveloperSection = () => {
               </div>
               <div className="flex items-center gap-3 text-gray-300">
                 <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">2</div>
-                <span>Webhooks</span>
+                <span>Secure Auth</span>
               </div>
               <div className="flex items-center gap-3 text-gray-300">
                 <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold">3</div>
-                <span>SDKs (Coming Soon)</span>
+                <span>JSON Events</span>
               </div>
             </div>
           </div>

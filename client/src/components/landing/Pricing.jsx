@@ -7,24 +7,24 @@ const plans = [
     name: 'Starter',
     price: '₹0',
     description: 'Perfect for side projects and learning.',
-    features: ['100 API requests/mo', '1 Team Member', 'Community Support', 'Basic Analytics'],
+    features: ['100k Events/month', '10 Tenants', '30-day Data Retention', 'Community Support'],
     cta: 'Start Free',
     highlighted: false,
   },
   {
     name: 'Pro',
-    price: '₹499',
+    price: '₹2,999',
     period: '/mo',
-    description: 'For scaling startups and businesses.',
-    features: ['5,000 API requests/mo', 'Unlimited Team Members', 'Priority Email Support', 'Advanced Analytics', 'Automated Invoicing', 'Rate Limiting'],
+    description: 'For scaling SaaS platforms.',
+    features: ['10M Events/month', 'Unlimited Tenants', '1-Year Data Retention', 'Priority Support', 'Advanced Analytics', 'Custom Domains'],
     cta: 'Get Started',
     highlighted: true,
   },
   {
     name: 'Enterprise',
-    price: '₹4,999',
+    price: 'Custom',
     description: 'For high-volume production systems.',
-    features: ['Unlimited requests', 'SLA Guarantee', 'Dedicated Success Manager', 'Custom Integrations', 'Audit Logs', 'SSO & SAML'],
+    features: ['Unlimited Events', '99.99% SLA', 'Dedicated Success Manager', 'On-premise Deployment', 'Audit Logs', 'SSO & SAML'],
     cta: 'Contact Sales',
     highlighted: false,
   },
@@ -87,8 +87,8 @@ const Pricing = () => {
                 <div className="mt-6 flex items-baseline">
                   <span className="text-5xl font-extrabold text-gray-900 tracking-tight">
                     {annual ? (
-                      plan.name === 'Pro' ? '₹399' :
-                      plan.name === 'Enterprise' ? '₹3,999' :
+                      plan.name === 'Pro' ? '₹2,399' :
+                      plan.name === 'Enterprise' ? 'Custom' :
                       plan.price
                     ) : (
                       plan.price

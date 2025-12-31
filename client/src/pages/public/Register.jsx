@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { BarChart3, Rocket, Shield } from 'lucide-react';
+import SEO from '../../components/common/SEO';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -59,6 +60,10 @@ const Register = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
+      <SEO 
+        title="Sign Up" 
+        description="Create your MeterOps account to start tracking usage and automating billing for your SaaS application."
+      />
       {/* Left Side - Design */}
       <div className="hidden lg:flex w-1/2 bg-gray-900 relative overflow-hidden items-center justify-center">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-900/40 via-gray-900 to-gray-900 z-10"></div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LayoutDashboard, CheckCircle2 } from 'lucide-react';
+import SEO from '../../components/common/SEO';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -28,6 +29,10 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
+      <SEO 
+        title="Login" 
+        description="Sign in to your MeterOps dashboard to manage your tenants, view usage analytics, and configure billing."
+      />
       {/* Left Side - Design */}
       <div className="hidden lg:flex w-1/2 bg-gray-900 relative overflow-hidden items-center justify-center">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-900/40 via-gray-900 to-gray-900 z-10"></div>

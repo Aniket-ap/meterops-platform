@@ -1,40 +1,40 @@
-import { Shield, Zap, Layout, Users, CreditCard, Activity, Lock, Globe, Server } from 'lucide-react';
+import { Shield, Zap, Layout, Users, CreditCard, Activity, Lock, Globe, Server, Database, Code } from 'lucide-react';
 
 const features = [
   {
     icon: Layout,
-    title: 'Multi-Tenant Architecture',
-    description: 'Built-in data isolation and security for every tenant. Scale without worrying about data leaks.',
+    title: 'Tenant Isolation',
+    description: 'Built-in multi-tenancy ensures data security. Every customer gets their own usage sandbox.',
     color: 'bg-blue-500',
   },
   {
     icon: Activity,
-    title: 'Precision Metering',
-    description: 'Monitor every API call and feature usage event in real-time with granular precision.',
+    title: 'Real-time Metering',
+    description: 'Ingest and aggregate usage events with millisecond latency using our high-performance pipeline.',
     color: 'bg-purple-500',
   },
   {
     icon: Zap,
-    title: 'Smart Rate Limiting',
-    description: 'Protect your API from abuse with high-performance, distributed rate limiting powered by Redis.',
+    title: 'Distributed Rate Limiting',
+    description: 'Protect your API resources with sliding window rate limits powered by Redis cluster.',
     color: 'bg-yellow-500',
   },
   {
     icon: Users,
-    title: 'Team Management',
-    description: 'Granular permissions for Owners, Admins, and Members out of the box.',
+    title: 'Role-Based Access',
+    description: 'Granular permissions for Owners, Admins, and Members. Manage team access effortlessly.',
     color: 'bg-green-500',
   },
   {
     icon: Shield,
     title: 'Enterprise Security',
-    description: 'Bank-grade encryption, JWT authentication, and automated audit logs.',
+    description: 'Bank-grade encryption, JWT authentication, and automated audit trails for compliance.',
     color: 'bg-red-500',
   },
   {
     icon: CreditCard,
-    title: 'Automated Billing',
-    description: 'Generate accurate invoices automatically based on actual usage and plan limits.',
+    title: 'Usage-Based Billing',
+    description: 'Automatically calculate bills based on tracked usage and generate invoices instantly.',
     color: 'bg-indigo-500',
   },
 ];
@@ -44,12 +44,12 @@ const Features = () => {
     <section id="features" className="py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <h2 className="text-lg font-bold text-primary uppercase tracking-wider mb-2">Powerful Features</h2>
+          <h2 className="text-lg font-bold text-primary uppercase tracking-wider mb-2">Platform Capabilities</h2>
           <p className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
-            Everything you need to monetize
+            Infrastructure for Usage-Based SaaS
           </p>
           <p className="mt-6 text-xl text-gray-600">
-             Stop building billing infrastructure from scratch. MeterOps gives you the building blocks to scale.
+             Stop building billing from scratch. MeterOps provides the complete toolkit to monetize your API products.
           </p>
         </div>
 
@@ -75,45 +75,45 @@ const Features = () => {
           ))}
         </div>
         
-        {/* Alternative Section - "Tech Stack" / "Why Us" */}
+        {/* Tech Stack Section */}
         <div className="mt-32">
-           <div className="bg-gray-900 rounded-3xl p-12 lg:p-16 text-center text-white relative overflow-hidden">
+           <div className="bg-[#0f172a] rounded-3xl p-12 lg:p-16 text-center text-white relative overflow-hidden">
               {/* Background Glow */}
-              <div className="absolute top-0 left-0 w-full h-full">
-                 <div className="absolute top-[-50%] left-[-20%] w-[800px] h-[800px] bg-primary/30 rounded-full blur-3xl"></div>
-                 <div className="absolute bottom-[-50%] right-[-20%] w-[800px] h-[800px] bg-purple-600/30 rounded-full blur-3xl"></div>
+              <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                 <div className="absolute top-[-50%] left-[-20%] w-[800px] h-[800px] bg-primary/20 rounded-full blur-3xl"></div>
+                 <div className="absolute bottom-[-50%] right-[-20%] w-[800px] h-[800px] bg-purple-600/20 rounded-full blur-3xl"></div>
               </div>
 
               <div className="relative z-10">
-                 <h2 className="text-3xl sm:text-4xl font-bold mb-6">Built for Developers, by Developers</h2>
-                 <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-10">
-                    MeterOps is architected with the modern stack you love. Open source friendly, extensible, and built for speed.
+                 <h2 className="text-3xl sm:text-4xl font-bold mb-6">Engineered for Scale</h2>
+                 <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
+                    MeterOps is architected with a modern, high-performance stack designed to handle millions of requests without breaking a sweat.
                  </p>
                  
                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                    <div className="flex flex-col items-center gap-3">
-                       <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md">
-                          <Server className="w-8 h-8 text-green-400" />
+                    <div className="flex flex-col items-center gap-3 group">
+                       <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10 group-hover:border-green-500/50 transition-colors">
+                          <Server className="w-10 h-10 text-green-400" />
                        </div>
-                       <span className="font-bold">Node.js</span>
+                       <span className="font-bold text-gray-200">Node.js</span>
                     </div>
-                    <div className="flex flex-col items-center gap-3">
-                       <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md">
-                          <Globe className="w-8 h-8 text-blue-400" />
+                    <div className="flex flex-col items-center gap-3 group">
+                       <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10 group-hover:border-blue-500/50 transition-colors">
+                          <Code className="w-10 h-10 text-blue-400" />
                        </div>
-                       <span className="font-bold">React</span>
+                       <span className="font-bold text-gray-200">React</span>
                     </div>
-                    <div className="flex flex-col items-center gap-3">
-                       <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md">
-                          <Lock className="w-8 h-8 text-yellow-400" />
+                    <div className="flex flex-col items-center gap-3 group">
+                       <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10 group-hover:border-red-500/50 transition-colors">
+                          <Zap className="w-10 h-10 text-red-400" />
                        </div>
-                       <span className="font-bold">Redis</span>
+                       <span className="font-bold text-gray-200">Redis</span>
                     </div>
-                    <div className="flex flex-col items-center gap-3">
-                       <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md">
-                          <Activity className="w-8 h-8 text-green-500" />
+                    <div className="flex flex-col items-center gap-3 group">
+                       <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10 group-hover:border-green-500/50 transition-colors">
+                          <Database className="w-10 h-10 text-green-500" />
                        </div>
-                       <span className="font-bold">MongoDB</span>
+                       <span className="font-bold text-gray-200">MongoDB</span>
                     </div>
                  </div>
               </div>
